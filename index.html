@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dental Patient Reactivation Calculator | DentalZap</title>
+  <meta name="description" content="Calculate how much revenue is hiding in your lapsed patient list. 3 numbers, 30 seconds, see your exact recovery potential.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230ea5e9'/><text x='50' y='62' font-family='Inter,sans-serif' font-size='36' font-weight='700' fill='white' text-anchor='middle'>DZ</text></svg>">
+</head>
+<body>
+  <main class="page">
+    <!-- Hero -->
+    <section class="hero" aria-label="Introduction">
+      <div class="logo" aria-hidden="true">
+        <span class="logo-mark">DZ</span>
+      </div>
+      <div class="audience-tag" aria-label="Audience">For Scottsdale cosmetic &amp; implant practices</div>
+      <h1 class="hero-title">The average Scottsdale cosmetic practice is leaking <span class="highlight-phrase">$210,000+</span> in lapsed patient revenue.</h1>
+      <p class="hero-subtitle"><span class="highlight-phrase">We already filled in the numbers.</span> Hit the button to see yours.</p>
+      <div class="proof-bar" aria-label="Social proof">
+        <span class="proof-item">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1l2.1 4.3 4.7.7-3.4 3.3.8 4.7L8 11.8 3.8 14l.8-4.7L1.2 6l4.7-.7L8 1z" fill="#0ea5e9"/></svg>
+          Built for AZ cosmetic &amp; implant practices
+        </span>
+        <span class="proof-divider" aria-hidden="true">&middot;</span>
+        <span class="proof-item">Avg $127K recovered in 90 days</span>
+      </div>
+    </section>
+
+    <!-- Calculator Card -->
+    <section class="calculator-section" aria-label="Revenue calculator">
+      <div class="calc-card">
+        <div class="calc-card-accent" aria-hidden="true"></div>
+        <h2 class="calc-heading">Calculate Your Recovery Potential</h2>
+        <form id="calcForm" class="calc-form" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="totalPatients">Total active patients</label>
+              <input
+                type="number"
+                id="totalPatients"
+                name="totalPatients"
+                min="1"
+                step="1"
+                value="1500"
+                placeholder="e.g. 1,500"
+                required
+                aria-describedby="totalPatientsHint"
+                inputmode="numeric"
+              >
+              <span class="hint" id="totalPatientsHint">Scottsdale cosmetic practice avg: 1,500</span>
+              <span class="error" id="totalPatientsError" role="alert"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="lapsedPct">% lapsed patients</label>
+              <input
+                type="number"
+                id="lapsedPct"
+                name="lapsedPct"
+                min="1"
+                max="100"
+                step="1"
+                value="40"
+                placeholder="e.g. 40"
+                required
+                aria-describedby="lapsedPctHint"
+                inputmode="numeric"
+              >
+              <span class="hint" id="lapsedPctHint">AZ cosmetic benchmark: 40% (range 30–60%)</span>
+              <span class="error" id="lapsedPctError" role="alert"></span>
+            </div>
+
+            <div class="form-group form-group-full">
+              <label for="avgTreatment">Average treatment value ($)</label>
+              <input
+                type="number"
+                id="avgTreatment"
+                name="avgTreatment"
+                min="1"
+                step="1"
+                value="2500"
+                placeholder="e.g. 2,500"
+                required
+                aria-describedby="avgTreatmentHint"
+                inputmode="numeric"
+              >
+              <span class="hint" id="avgTreatmentHint">Cosmetic/implant case avg: $2,500 (implants $4K+, veneers $8K+)</span>
+              <span class="error" id="avgTreatmentError" role="alert"></span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" id="calcBtn">
+            Show Me My Hidden Revenue
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3.75 9h10.5M10.5 5.25L14.25 9l-3.75 3.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="below-cta">Free. Instant. No card, no call, no catch.</p>
+        </form>
+
+        <!-- Results -->
+        <div id="results" class="results" hidden aria-live="polite">
+          <div class="results-divider"></div>
+
+          <p class="results-label">You're leaving this much in the chair</p>
+          <p class="results-amount" id="resultsAmount">$0</p>
+          <p class="results-monthly" id="resultsMonthly">That's <strong>$0/month</strong> walking out your door.</p>
+
+          <div class="results-pills">
+            <span class="pill" id="pillLapsed">
+              <span class="pill-value">0</span>
+              <span class="pill-label">lapsed patients</span>
+            </span>
+            <span class="pill" id="pillRecoverable">
+              <span class="pill-value">0</span>
+              <span class="pill-label">est. recoverable</span>
+            </span>
+            <span class="pill" id="pillAvg">
+              <span class="pill-value">$0</span>
+              <span class="pill-label">avg treatment</span>
+            </span>
+          </div>
+
+          <!-- Urgency line -->
+          <div class="urgency-box" id="urgencyBox">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 5.5v4M9 12.5h.01M9 1.5L1.5 14.5h15L9 1.5z" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Every 30 days you wait, <strong id="urgencyCount">0</strong> more patients are permanently lost to the practice down the street.</span>
+          </div>
+
+          <!-- Testimonial -->
+          <div class="testimonial">
+            <img class="testimonial-avatar-img" src="testimonial.jpg" alt="Dr. Michael R., dentist in Phoenix AZ" loading="lazy">
+            <div class="testimonial-body">
+              <p class="testimonial-quote">"I thought this was marketing fluff. Then I ran the campaign. 52 patients back in the chair in 28 days — $31K in treatment plans."</p>
+              <p class="testimonial-author">Dr. Michael R. · Phoenix, AZ</p>
+            </div>
+          </div>
+
+          <!-- Email Capture -->
+          <div class="capture-box" id="captureBox">
+            <div class="capture-badge" aria-hidden="true">Free · 1-page PDF</div>
+            <p class="capture-heading">Get your personalized <strong id="captureAmount">$0</strong> recovery playbook</p>
+            <p class="capture-sub">The exact 3-step sequence our Scottsdale practices use to win back lapsed patients in 30 days. One page. No fluff.</p>
+            <form id="captureForm" class="capture-form" novalidate>
+              <div class="capture-inputs single">
+                <input type="email" id="captureEmail" placeholder="you@yourpractice.com" required autocomplete="email" aria-label="Practice email address">
+              </div>
+              <span class="error" id="captureError" role="alert"></span>
+              <button type="submit" class="btn-primary btn-capture">
+                Send Me The Playbook
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3.75 9h10.5M10.5 5.25L14.25 9l-3.75 3.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="capture-guarantees">
+                <span class="guarantee-item">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4.5" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Arrives in 60 seconds
+                </span>
+                <span class="guarantee-item">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4.5" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  No sales calls unless you ask
+                </span>
+                <span class="guarantee-item">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4.5" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Unsubscribe in 1 click
+                </span>
+              </div>
+            </form>
+          </div>
+
+          <!-- Success State -->
+          <div id="captureSuccess" class="capture-success" hidden>
+            <div class="success-icon" aria-hidden="true">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" fill="#10b981"/><path d="M10 16.5l4 4 8-9" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>Check your inbox in the next 60 seconds</h3>
+            <p>Your personalized recovery playbook is on its way. If it doesn't arrive, check spam and mark us "Not Spam" — this is the #1 reason practices miss it.</p>
+            <div class="success-book">
+              <p class="success-book-label">Want us to run this on your <em>actual</em> lapsed list?</p>
+              <a id="ctaBtn" href="#" class="btn-book-call" target="_blank" rel="noopener noreferrer">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="2" y="3" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.75"/><path d="M2 7h14M6 2v2M12 2v2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+                Book My Free 15-Min Recovery Audit
+              </a>
+              <p class="success-book-sub">Only 3 slots open this week · No pitch, just your numbers</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shortcut CTA for conviction-ready visitors -->
+      <div class="shortcut-cta" aria-label="Direct audit shortcut">
+        <p class="shortcut-lead">Already know you want this?</p>
+        <a class="shortcut-link" id="shortcutCtaBtn" href="#" target="_blank" rel="noopener noreferrer">
+          Skip the calculator — book my free 15-min audit
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.33 8h9.34M9.33 4.67L12.67 8l-3.34 3.33" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <p class="shortcut-sub">Only 3 slots open this week · Scottsdale cosmetic &amp; implant practices only</p>
+      </div>
+    </section>
+
+    <!-- Trust Footer -->
+    <footer class="trust-footer" aria-label="Trust indicators and disclaimer">
+      <div class="trust-stats">
+        <span>Scottsdale-focused</span>
+        <span class="trust-dot" aria-hidden="true">&middot;</span>
+        <span>47 avg patients reactivated</span>
+        <span class="trust-dot" aria-hidden="true">&middot;</span>
+        <span>$127K avg recovered / 90 days</span>
+      </div>
+      <p class="disclaimer">Estimate for informational purposes. Results vary based on list hygiene, offer, and follow-through.</p>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
